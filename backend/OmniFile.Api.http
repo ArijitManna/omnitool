@@ -1,0 +1,6 @@
+@OmniFile.Api_HostAddress = http://localhost:5265
+
+GET {{OmniFile.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

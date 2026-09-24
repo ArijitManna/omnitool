@@ -1,0 +1,26 @@
+##
+# OmniFile ignore rules
+##
+
+# Frontend
+frontend/node_modules/
+frontend/dist/
+
+# Backend
+backend/bin/
+backend/obj/
+backend/App_Data/
+backend/**/App_Data/
+
+# IDE / OS
+.vs/
+.idea/
+*.user
+*.suo
+.DS_Store
+Thumbs.db
+
+# Env
+.env
+.env.local
+*.log

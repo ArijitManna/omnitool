@@ -1,0 +1,20 @@
+# Build context is the repo root
+.git
+.vs
+.idea
+**/.DS_Store
+**/Thumbs.db
+**/bin
+**/obj
+**/node_modules
+**/dist
+**/App_Data
+**/*.user
+**/*.log
+frontend/dist
+backend/bin
+backend/obj
+agent-transcripts
+.cursor
+*.md
+!README.md
