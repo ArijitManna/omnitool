@@ -1,5 +1,6 @@
 import {
   Binary,
+  Braces,
   Calculator,
   Crop,
   FileCheck,
@@ -53,6 +54,7 @@ const ICONS: Record<string, LucideIcon> = {
   Barcode,
   Binary,
   Calculator,
+  Braces,
 }
 
 export function ToolIcon({ name, className }: { name: string; className?: string }) {

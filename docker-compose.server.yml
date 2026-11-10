@@ -1,0 +1,7 @@
+services:
+  api:
+    ports:
+      - "5010:8080"
+  web:
+    ports:
+      - "3010:80"

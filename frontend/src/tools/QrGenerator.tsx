@@ -95,7 +95,7 @@ export function QrGenerator() {
         processing={processing}
         onDownload={
           dataUrl
-            ? () => downloadDataUrl(dataUrl, 'omnifile-qr.png')
+            ? () => downloadDataUrl(dataUrl, 'swiftdoc-qr.png')
             : undefined
         }
         downloadLabel="Download PNG"

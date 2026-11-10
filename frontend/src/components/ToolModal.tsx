@@ -10,6 +10,7 @@ import { ImageConverter } from '../tools/ImageConverter'
 import { ImageResizer } from '../tools/ImageResizer'
 import { ImageTargetKb } from '../tools/ImageTargetKb'
 import { ImageToPdf } from '../tools/ImageToPdf'
+import { JsonBeautifier } from '../tools/JsonBeautifier'
 import { OcrExtractor } from '../tools/OcrExtractor'
 import { PassportPhoto } from '../tools/PassportPhoto'
 import { PdfCompressor } from '../tools/PdfCompressor'
@@ -79,6 +80,9 @@ export function ToolModal({ tool, initialFiles, onClose }: ToolModalProps) {
           {tool.id === 'doc-ppt-pdf' && <PptToPdf initialFiles={initialFiles} />}
           {tool.id === 'doc-ocr' && <OcrExtractor initialFiles={initialFiles} />}
           {tool.id === 'qr-generator' && <QrGenerator />}
+          {tool.id === 'file-json-beautify' && (
+            <JsonBeautifier initialFiles={initialFiles} />
+          )}
           {!tool.live && <ComingSoon tool={tool} />}
         </div>
 

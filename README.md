@@ -1,4 +1,4 @@
-# OmniFile Tools
+# SwiftDoc
 
 One platform for everyday file, image, PDF, and document utilities.
 
@@ -11,6 +11,7 @@ Live tools (Phase 0 + batch 2):
 | **Image Resizer** | Browser | Pixels or %, lock aspect ratio |
 | **JPG / PNG / WebP Converter** | Browser | Format conversion in-browser |
 | **QR Code Generator** | Browser | Text/URL → PNG download |
+| **JSON Beautifier** | Browser | Pretty-print / minify, validate, copy & download |
 | **PDF Merge** | ASP.NET API | Multipart upload → merged.pdf; temps deleted |
 | **Image to PDF** | Browser | Multi-image → PDF (A4 / Letter / fit) |
 | **Passport Photo Generator** | Browser | India/US/UK sizes, crop or pad, bg color |

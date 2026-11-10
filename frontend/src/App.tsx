@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
 import { CategoryTabs } from './components/CategoryTabs'
-import { Footer } from './components/Footer'
 import { Header } from './components/Header'
 import { HeroDropzone } from './components/HeroDropzone'
 import { ToolGrid } from './components/ToolGrid'
@@ -100,8 +99,6 @@ export default function App() {
           <ToolGrid tools={tools} onOpen={(id) => openTool(id)} />
         </section>
       </main>
-
-      <Footer />
 
       {activeTool && (
         <ToolModal

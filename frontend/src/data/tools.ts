@@ -268,6 +268,17 @@ export const TOOL_REGISTRY: ToolDefinition[] = [
     processing: 'client',
   },
   {
+    id: 'file-json-beautify',
+    name: 'JSON Beautifier',
+    cat: 'file',
+    mvp: true,
+    icon: 'Braces',
+    desc: 'Pretty-print or minify JSON with validation, copy, and download.',
+    badge: 'Live',
+    live: true,
+    processing: 'client',
+  },
+  {
     id: 'file-base64',
     name: 'Base64 Encoder & Decoder',
     cat: 'file',
@@ -309,6 +320,12 @@ export function suggestToolForFile(file: File): string {
   if (file.type.startsWith('image/')) return 'img-compressor'
   if (file.type === 'application/pdf' || file.name.toLowerCase().endsWith('.pdf')) {
     return 'pdf-merge'
+  }
+  if (
+    file.type === 'application/json' ||
+    file.name.toLowerCase().endsWith('.json')
+  ) {
+    return 'file-json-beautify'
   }
   return 'img-compressor'
 }

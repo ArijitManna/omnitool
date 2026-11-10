@@ -1,4 +1,4 @@
-# OmniFile frontend — Vite build + nginx (proxies /api to the API service)
+# SwiftDoc frontend — Vite build + nginx (proxies /api to the API service)
 FROM node:22-alpine AS build
 WORKDIR /app
 COPY frontend/package.json frontend/package-lock.json ./

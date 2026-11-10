@@ -21,6 +21,7 @@ export function PassportPhoto({ initialFiles = [] }: Props) {
   const [customH, setCustomH] = useState(400)
   const [fit, setFit] = useState<'cover' | 'contain'>('cover')
   const [bg, setBg] = useState('#ffffff')
+  const [replaceBg, setReplaceBg] = useState(true)
   const [origUrl, setOrigUrl] = useState<string | null>(null)
   const [resultUrl, setResultUrl] = useState<string | null>(null)
   const [resultBlob, setResultBlob] = useState<Blob | null>(null)
@@ -28,6 +29,7 @@ export function PassportPhoto({ initialFiles = [] }: Props) {
   const [dims, setDims] = useState<string | null>(null)
   const [processing, setProcessing] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [regenKey, setRegenKey] = useState(0)
 
   const file = files[0]
   const preset = PASSPORT_SIZES.find((s) => s.id === sizeId) ?? PASSPORT_SIZES[0]
@@ -39,39 +41,66 @@ export function PassportPhoto({ initialFiles = [] }: Props) {
     }
     const url = URL.createObjectURL(file)
     setOrigUrl(url)
-    setResultUrl(null)
-    setResultBlob(null)
-    setResultSize(undefined)
-    setDims(null)
     return () => URL.revokeObjectURL(url)
   }, [file])
 
-  const process = async () => {
+  useEffect(() => {
     if (!file) {
-      setError('Select a photo first.')
+      setResultUrl(null)
+      setResultBlob(null)
+      setResultSize(undefined)
+      setDims(null)
       return
     }
-    setError(null)
-    setProcessing(true)
-    try {
-      const widthPx = sizeId === 'custom' ? customW : preset.widthPx
-      const heightPx = sizeId === 'custom' ? customH : preset.heightPx
-      const result = await generatePassportPhoto(file, {
-        widthPx,
-        heightPx,
-        fit,
-        background: bg,
-      })
-      setResultBlob(result.blob)
-      setResultSize(result.size)
-      setResultUrl(result.dataUrl)
-      setDims(`${result.width}×${result.height}px`)
-    } catch (e) {
-      setError(e instanceof Error ? e.message : 'Failed to generate photo')
-    } finally {
-      setProcessing(false)
+
+    let cancelled = false
+    const run = async () => {
+      setError(null)
+      setProcessing(true)
+      try {
+        const widthPx = sizeId === 'custom' ? customW : preset.widthPx
+        const heightPx = sizeId === 'custom' ? customH : preset.heightPx
+        const result = await generatePassportPhoto(file, {
+          widthPx,
+          heightPx,
+          fit,
+          background: bg,
+          replaceBackground: replaceBg,
+        })
+        if (cancelled) return
+        setResultBlob(result.blob)
+        setResultSize(result.size)
+        setResultUrl(result.dataUrl)
+        setDims(`${result.width}×${result.height}px`)
+      } catch (e) {
+        if (cancelled) return
+        setError(e instanceof Error ? e.message : 'Failed to generate photo')
+        setResultUrl(null)
+        setResultBlob(null)
+        setResultSize(undefined)
+        setDims(null)
+      } finally {
+        if (!cancelled) setProcessing(false)
+      }
     }
-  }
+
+    const t = window.setTimeout(run, 120)
+    return () => {
+      cancelled = true
+      window.clearTimeout(t)
+    }
+  }, [
+    file,
+    sizeId,
+    customW,
+    customH,
+    fit,
+    bg,
+    replaceBg,
+    preset.widthPx,
+    preset.heightPx,
+    regenKey,
+  ])
 
   return (
     <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
@@ -84,7 +113,7 @@ export function PassportPhoto({ initialFiles = [] }: Props) {
           accept="image/*"
           files={files}
           onFiles={setFiles}
-          hint="Cropped to standard size in your browser"
+          hint="Background replaced & sized in your browser"
         />
 
         <div>
@@ -147,7 +176,7 @@ export function PassportPhoto({ initialFiles = [] }: Props) {
 
         <div>
           <label className="mb-1 block text-xs font-semibold">Background</label>
-          <div className="flex items-center gap-2">
+          <div className="mb-2 flex items-center gap-2">
             <input
               type="color"
               value={bg}
@@ -157,30 +186,47 @@ export function PassportPhoto({ initialFiles = [] }: Props) {
             <button
               type="button"
               onClick={() => setBg('#ffffff')}
-              className="rounded-lg border border-slate-300 px-2 py-1 text-xs dark:border-slate-600"
+              className={`rounded-lg border px-2 py-1 text-xs ${
+                bg.toLowerCase() === '#ffffff'
+                  ? 'border-brand-500 bg-brand-50 text-brand-700'
+                  : 'border-slate-300 dark:border-slate-600'
+              }`}
             >
               White
             </button>
             <button
               type="button"
               onClick={() => setBg('#e8f0fe')}
-              className="rounded-lg border border-slate-300 px-2 py-1 text-xs dark:border-slate-600"
+              className={`rounded-lg border px-2 py-1 text-xs ${
+                bg.toLowerCase() === '#e8f0fe'
+                  ? 'border-brand-500 bg-brand-50 text-brand-700'
+                  : 'border-slate-300 dark:border-slate-600'
+              }`}
             >
               Light blue
             </button>
           </div>
+          <label className="flex cursor-pointer items-center gap-2 text-xs text-slate-600 dark:text-slate-300">
+            <input
+              type="checkbox"
+              checked={replaceBg}
+              onChange={(e) => setReplaceBg(e.target.checked)}
+              className="rounded border-slate-300"
+            />
+            Replace photo background with selected color
+          </label>
         </div>
 
         {error && <p className="text-xs text-red-600">{error}</p>}
 
         <button
           type="button"
-          onClick={process}
+          onClick={() => setRegenKey((k) => k + 1)}
           disabled={processing || !file}
           className="flex w-full items-center justify-center gap-2 rounded-xl bg-brand-600 py-2.5 text-xs font-semibold text-white shadow-md shadow-brand-600/20 transition hover:bg-brand-700 disabled:opacity-50"
         >
           <RefreshCw className={`h-4 w-4 ${processing ? 'animate-spin' : ''}`} />
-          Generate photo
+          {processing ? 'Generating…' : 'Regenerate photo'}
         </button>
       </div>
 

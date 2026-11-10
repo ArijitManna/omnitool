@@ -22,10 +22,7 @@ export function Header({ dark, onToggleDark, search, onSearch, onLogoClick }: He
           </div>
           <div>
             <span className="bg-gradient-to-r from-brand-600 to-indigo-600 bg-clip-text text-xl font-bold tracking-tight text-transparent dark:from-brand-500 dark:to-indigo-400">
-              OmniFile
-            </span>
-            <span className="ml-1 rounded bg-brand-100 px-1.5 py-0.5 text-xs font-semibold text-brand-700 dark:bg-brand-900/50 dark:text-brand-300">
-              Tools
+              SwiftDoc
             </span>
             <p className="hidden text-[10px] font-medium text-slate-500 sm:block dark:text-slate-400">
               All-in-One Processing Platform

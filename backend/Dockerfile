@@ -1,4 +1,4 @@
-# OmniFile API — ASP.NET Core + LibreOffice (high-fidelity Office → PDF)
+# SwiftDoc API — ASP.NET Core + LibreOffice (high-fidelity Office → PDF)
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 WORKDIR /src
 COPY backend/OmniFile.Api.csproj ./

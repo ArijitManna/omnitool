@@ -50,7 +50,7 @@ app.MapControllers();
 app.MapGet("/api/health", (LibreOfficeConversionService lo) => Results.Ok(new
 {
     status = "ok",
-    service = "OmniFile.Api",
+    service = "SwiftDoc.Api",
     libreOffice = lo.IsAvailable,
 }));
 
