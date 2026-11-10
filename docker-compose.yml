@@ -11,9 +11,9 @@ services:
       LibreOffice__TimeoutSeconds: "180"
     volumes:
       - api_data:/app/App_Data
-    # Optional: expose API directly for debugging
-    # ports:
-    #   - "8080:8080"
+    # Host port chosen to avoid other apps on this VPS (see docker-compose.server.yml)
+    ports:
+      - "5010:8080"
     healthcheck:
       test: ["CMD", "curl", "-fsS", "http://127.0.0.1:8080/api/health"]
       interval: 30s
@@ -26,8 +26,9 @@ services:
       context: .
       dockerfile: frontend/Dockerfile
     restart: unless-stopped
+    # Do not use :80 — Apache already owns it on the shared VPS
     ports:
-      - "80:80"
+      - "3010:80"
     depends_on:
       api:
         condition: service_healthy

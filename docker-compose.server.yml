@@ -1,3 +1,6 @@
+# Production port map for shared VPS (must stay clear of other apps).
+# Occupied on this host: 80/443 (httpd), 2002-2006 (nginx), 3000/5000 (SmartInvoice),
+# 5010 reserved for SwiftDoc API, 5435/8082 (GoldDesk), 8084/8085 (Architecture Simplified).
 services:
   api:
     ports:
